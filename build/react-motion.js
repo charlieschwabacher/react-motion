@@ -649,7 +649,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        indexB = _x5,
 	        onRemove = _x6,
 	        accum = _x7;
-	    endA = endB = keyA = keyB = fill = fill = undefined;
 	    _again = false;
 	
 	    var endA = indexA === arrA.length;
@@ -672,6 +671,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _x6 = onRemove;
 	      _x7 = accum;
 	      _again = true;
+	      endA = endB = keyA = keyB = undefined;
 	      continue _function;
 	    }
 	
@@ -688,6 +688,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _x6 = onRemove;
 	      _x7 = accum;
 	      _again = true;
+	      endA = endB = keyA = keyB = fill = undefined;
 	      continue _function;
 	    }
 	
@@ -701,6 +702,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _x6 = onRemove;
 	      _x7 = accum;
 	      _again = true;
+	      endA = endB = keyA = keyB = fill = undefined;
 	      continue _function;
 	    }
 	
@@ -717,6 +719,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _x6 = onRemove;
 	      _x7 = accum;
 	      _again = true;
+	      endA = endB = keyA = keyB = fill = fill = undefined;
 	      continue _function;
 	    }
 	
@@ -728,6 +731,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _x6 = onRemove;
 	    _x7 = accum;
 	    _again = true;
+	    endA = endB = keyA = keyB = fill = fill = undefined;
 	    continue _function;
 	  }
 	}
@@ -1036,18 +1040,18 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
 	
 	var now = __webpack_require__(7),
-	    global = typeof window === 'undefined' ? {} : window,
+	    root = typeof window === 'undefined' ? global : window,
 	    vendors = ['moz', 'webkit'],
 	    suffix = 'AnimationFrame',
-	    raf = global['request' + suffix],
-	    caf = global['cancel' + suffix] || global['cancelRequest' + suffix];
+	    raf = root['request' + suffix],
+	    caf = root['cancel' + suffix] || root['cancelRequest' + suffix];
 	
-	for (var i = 0; i < vendors.length && !raf; i++) {
-	  raf = global[vendors[i] + 'Request' + suffix];
-	  caf = global[vendors[i] + 'Cancel' + suffix] || global[vendors[i] + 'CancelRequest' + suffix];
+	for (var i = 0; !raf && i < vendors.length; i++) {
+	  raf = root[vendors[i] + 'Request' + suffix];
+	  caf = root[vendors[i] + 'Cancel' + suffix] || root[vendors[i] + 'CancelRequest' + suffix];
 	}
 	
 	// Some versions of FF have rAF but not cAF
@@ -1102,11 +1106,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // Wrap in a new function to prevent
 	  // `cancel` potentially being assigned
 	  // to the native rAF function
-	  return raf.call(global, fn);
+	  return raf.call(root, fn);
 	};
 	module.exports.cancel = function () {
-	  caf.apply(global, arguments);
+	  caf.apply(root, arguments);
 	};
+	module.exports.polyfill = function () {
+	  root.requestAnimationFrame = raf;
+	  root.cancelAnimationFrame = caf;
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 10 */
@@ -1186,6 +1195,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // not a spring config, not something we want to interpolate
 	      continue;
 	    }
+	    if (currentStyle[key] == null) {
+	      continue;
+	    }
 	    var _style$key$config = style[key].config;
 	    var k = _style$key$config[0];
 	    var b = _style$key$config[1];
@@ -1207,6 +1219,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (style[key] == null || !style[key].config) {
 	      // not a spring config, not something we want to interpolate
 	      ret[key] = 0;
+	      continue;
+	    }
+	    if (currentStyle[key] == null) {
 	      continue;
 	    }
 	    var _style$key$config2 = style[key].config;

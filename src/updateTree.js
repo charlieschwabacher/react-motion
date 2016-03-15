@@ -50,6 +50,9 @@ export function updateCurrentStyle(
       // not a spring config, not something we want to interpolate
       continue;
     }
+    if (currentStyle[key] == null) {
+      continue;
+    }
     const [k, b] = style[key].config;
     const val = stepper(
       frameRate,
@@ -78,6 +81,9 @@ export function updateCurrentVelocity(
     if (style[key] == null || !style[key].config) {
       // not a spring config, not something we want to interpolate
       ret[key] = 0;
+      continue;
+    }
+    if (currentStyle[key] == null) {
       continue;
     }
     const [k, b] = style[key].config;
